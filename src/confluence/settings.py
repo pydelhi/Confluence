@@ -38,6 +38,7 @@ DEBUG = env('DEBUG', default=True)
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'registration.User'
 
 # Application definition
 

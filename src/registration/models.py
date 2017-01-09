@@ -1,11 +1,12 @@
 from __future__ import unicode_literals
 
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 # Create your models here.
 
 
-class User(models.Model):
+class User(AbstractUser):
     GENDER_CHOICES = (
         ('M', 'Male'),
         ('F', 'Female'),
@@ -20,8 +21,6 @@ class User(models.Model):
         ('XXL', 'Extra Extra Large'),
     )
 
-    first_name = models.CharField(max_length=20)
-    last_name = models.CharField(max_length=20)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     tshirt_size = models.CharField(max_length=1, choices=TSHIRT_SIZE_CHOICES)
     contact = models.CharField(max_length=10)

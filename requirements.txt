@@ -9,7 +9,10 @@ djangorestframework==3.5.3
 facebook-sdk==2.0.0
 kombu==4.0.2
 Markdown==2.6.7
+oauthlib==2.0.1
 pytz==2016.10
 requests==2.12.4
+requests-oauthlib==0.7.0
 six==1.10.0
+tweepy==3.5.0
 vine==1.1.3

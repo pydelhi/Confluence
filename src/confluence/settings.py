@@ -14,15 +14,6 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 import environ
 
-# Celery settings
-CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'
-
-#: Only add pickle to this list if your broker is secured
-#: from unwanted access (see userguide/security.html)
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_RESULT_BACKEND = 'django-db'
-CELERY_TASK_SERIALIZER = 'json'
-
 
 root = environ.Path(__file__) - 3  # three folder back (/a/b/c/ - 3 = /)
 env = environ.Env(DEBUG=(bool, False),)  # set default values and casting
@@ -43,16 +34,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY')
-
-# FACEBOOK PAGE ACCESS TOKEN
-FACEBOOK_PAGE_ACCESS_TOKEN = env('FACEBOOK_PAGE_ACCESS_TOKEN')
-
-# TWITTER CREDENTIALS
-TWITTER_CONSUMER_KEY = env('TWITTER_CONSUMER_KEY')
-TWITTER_CONSUMER_SECRET = env('TWITTER_CONSUMER_SECRET')
-TWITTER_ACCESS_KEY = env('TWITTER_ACCESS_KEY')
-TWITTER_ACCESS_SECRET = env('TWITTER_ACCESS_SECRET')
-
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG', default=True)
@@ -158,3 +139,66 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Settings related to Logging goes below
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': 'Level: %(levelname)s '
+                      '%(asctime)s '
+                      'Process: %(process)d '
+                      'Thread: %(thread)d: '
+                      '%(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        },
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'django_debug.log',
+            'formatter': 'verbose'
+        },
+    },
+    'loggers': {
+        'registration': {
+            'handlers': ['console', 'file'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'propagate': True,
+        },
+    },
+}
+
+
+# Application specific secrets goes here
+
+# Celery settings
+CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'
+
+#: Only add pickle to this list if your broker is secured
+#: from unwanted access (see userguide/security.html)
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_TASK_SERIALIZER = 'json'
+
+# Registration App specific settings
+EXPLARA_API_KEY = env('EXPLARA_API_KEY')
+EXPLARA_ATTENDEE_LIST_URL = 'https://www.explara.com/api/e/attendee-list'
+
+# Social Media App specific settings
+
+# Access token for Facebook page
+FACEBOOK_PAGE_ACCESS_TOKEN = env('FACEBOOK_PAGE_ACCESS_TOKEN')
+
+# TWITTER CREDENTIALS
+TWITTER_CONSUMER_KEY = env('TWITTER_CONSUMER_KEY')
+TWITTER_CONSUMER_SECRET = env('TWITTER_CONSUMER_SECRET')
+TWITTER_ACCESS_KEY = env('TWITTER_ACCESS_KEY')
+TWITTER_ACCESS_SECRET = env('TWITTER_ACCESS_SECRET')
+

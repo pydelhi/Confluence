@@ -8,6 +8,7 @@ __pycache__/
 
 # IntelliJ Files
 .idea/
+Confluence.iml
 
 # Distribution / packaging
 .Python

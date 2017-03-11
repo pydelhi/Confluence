@@ -202,3 +202,10 @@ TWITTER_CONSUMER_SECRET = env('TWITTER_CONSUMER_SECRET')
 TWITTER_ACCESS_KEY = env('TWITTER_ACCESS_KEY')
 TWITTER_ACCESS_SECRET = env('TWITTER_ACCESS_SECRET')
 
+TICKET_PALTFORM_CHOICES = (
+    ('E', 'explara'),
+    ('M', 'meetup')
+)
+
+TICKET_PALTFORM_CHOICES_REVERSED = {v: k for k, v in
+                                    dict(TICKET_PALTFORM_CHOICES).items()}

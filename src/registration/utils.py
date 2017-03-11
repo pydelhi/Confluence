@@ -1,9 +1,9 @@
+import datetime
 import requests
 import logging
 
 from confluence.settings import EXPLARA_API_KEY, EXPLARA_ATTENDEE_LIST_URL
-from .models import User
-
+from .models import User, UserAttendance
 
 logger = logging.getLogger(__name__)
 
@@ -54,7 +54,7 @@ def process_explara_data_and_populate_db(attendee_order_list):
         tickets = order['attendee']
         for ticket in tickets:
             logger.info("Processing Ticket: " + str(ticket))
-            user_data = {}
+            user_data = {"ticketing_platform": "E"}
             try:
                 user_data['email'] = ticket['email']
                 user_data['ticket_id'] = ticket['ticketNo']
@@ -81,3 +81,17 @@ def create_user_in_db(**kwargs):
     except Exception as e:
         logger.error("Cannot create User because: " + str(e))
 
+
+def get_attendance_for_user(user):
+    """ Get or create the attendance object for user and return the
+    respective message.
+    """
+    now = datetime.datetime.today()
+    attendance, created = UserAttendance.objects.get_or_create(
+        user=user, attended_on=now
+    )
+    if created:
+        message = "attendance marked for today"
+    else:
+        message = "attendance already marked for today."
+    return attendance, message
